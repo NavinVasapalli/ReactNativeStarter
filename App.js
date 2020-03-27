@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, FlatList } from 'react-native';
 
 export default function App() {
   const [enteredCourse, setEnteredCourse] = useState('');
@@ -8,7 +8,7 @@ export default function App() {
     setEnteredCourse(enteredText)
   }
   const addCourseHandeler = () => {
-    setListCourse(currentCourse => [...currentCourse, enteredCourse]);
+    setListCourse(currentCourse => [...currentCourse, { key: Math.random().toString(), value: enteredCourse}]);
   }
 
   return (
@@ -19,9 +19,20 @@ export default function App() {
           <Button title="Add" style={style.addCourseButtom} onPress={addCourseHandeler} />
         </View>
       </View>
-      <ScrollView>
+ 
+ <FlatList 
+ keyExtractor={(item, index) => item.item }
+ data={listCourse}
+ renderItem={
+itemData => ( 
+<View style={style.courseListItem} >
+  <Text style={style.courseTitle}>{itemData.item.value}</Text>
+  </View>) }
+ />
+ 
+      {/* <ScrollView>
         { listCourse.map((course ,  index) => <View style={style.courseListItem} key={index}><Text style={style.courseTitle}>{course}</Text></View>) }
-      </ScrollView>
+      </ScrollView> */}
     </View>
   );
 
