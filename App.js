@@ -1,84 +1,152 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, ScrollView, FlatList } from 'react-native';
+import { SearchBar, ListItem } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-export default function App() {
-  const [enteredCourse, setEnteredCourse] = useState('');
-  const [listCourse, setListCourse] = useState([]);
-  const courseInputHandler = (enteredText) => {
-    setEnteredCourse(enteredText)
-  }
-  const addCourseHandeler = () => {
-    setListCourse(currentCourse => [...currentCourse, { key: Math.random().toString(), value: enteredCourse}]);
-  }
+export default class App extends React.Component {
+  state = {
+    search: '',
+  };
 
-  return (
-    <View style={style.container}>
-      <View style={style.row}>
-        <View style={style.addCourseSec}>
-          <TextInput placeholder="Course Name" style={style.addCourseInput} onChangeText={courseInputHandler} value={enteredCourse} />
-          <Button title="Add" style={style.addCourseButtom} onPress={addCourseHandeler} />
+  updateSearch = search => {
+    this.setState({ search });
+  };
+
+
+
+  render() {
+    const { search } = this.state;
+    const list = [
+      {
+        name: 'Amy Farha',
+        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+        subtitle: 'Vice President'
+      },
+      {
+        name: 'Chris Jackson',
+        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+        subtitle: 'Vice Chairman'
+      }, {
+        name: 'Amy Farha',
+        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+        subtitle: 'Vice President'
+      },
+      {
+        name: 'Chris Jackson',
+        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+        subtitle: 'Vice Chairman'
+      }, {
+        name: 'Amy Farha',
+        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+        subtitle: 'Vice President'
+      },
+      {
+        name: 'Chris Jackson',
+        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+        subtitle: 'Vice Chairman'
+      }, {
+        name: 'Amy Farha',
+        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+        subtitle: 'Vice President'
+      },
+      {
+        name: 'Chris Jackson',
+        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+        subtitle: 'Vice Chairman'
+      }
+    ];
+
+   const keyExtractor = (item, index) => index.toString()
+
+   const renderItem = ({ item }) => (
+      <ListItem
+        title={item.name}
+        subtitle={item.subtitle}
+        leftAvatar={{ source: { uri: item.avatar_url } }}
+        bottomDivider
+        
+      />
+    )
+
+
+
+    return (
+
+      <View style={StyleSheet.Container}>
+        <View style={style.Header}>
+          <Button title="Edit" style={style.HeaderLeftBtn} />
+          <Text style={style.ContentHeading}>Chats</Text>
+          <View style={style.HeaderRightIconView}>
+            <Icon name='create' size={18} color={"#007aff"} />
+          </View>
         </View>
-      </View>
- 
- <FlatList 
- keyExtractor={(item, index) => item.item }
- data={listCourse}
- renderItem={
-itemData => ( 
-<View style={style.courseListItem} >
-  <Text style={style.courseTitle}>{itemData.item.value}</Text>
-  </View>) }
- />
- 
-      {/* <ScrollView>
-        { listCourse.map((course ,  index) => <View style={style.courseListItem} key={index}><Text style={style.courseTitle}>{course}</Text></View>) }
-      </ScrollView> */}
-    </View>
-  );
 
+        <Text style={style.Heading}>Chats</Text>
+
+        <SearchBar
+          placeholder="Type Here..."
+          onChangeText={this.updateSearch}
+          value={search}
+          lightTheme={true}
+        />
+
+        <FlatList
+          keyExtractor={keyExtractor}
+          data={list}
+          renderItem={renderItem}
+        />
+
+
+      </View>
+
+    );
+
+  }
 
 }
 
 
 const style = StyleSheet.create({
 
-  container: {
-    marginTop: 20
+  Container: {
+    flex: 1
   },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    height: 50,
+
+  Header: {
+    height: 55,
+    marginTop: 20,
+    flexDirection: "row",
     alignItems: "center",
-    backgroundColor: '#98fb98',
-    padding: 5
+    justifyContent: 'space-between'
   },
-  addCourseSec: {
-    flexDirection: 'row'
-  },
-  addCourseInput: {
-    flex: 1,
-    textDecorationColor: '#fff',
-    paddingLeft: 5,
-    paddingRight: 5,
-  },
-  addCourseButtom: {
-    backgroundColor: '#6b8e23'
+  HeaderLeftBtn: {
+    width: "10%"
 
   },
-  courseListItem:{
-    padding: 15,
-    margin: 5,
-    backgroundColor: '#d3d3d3',
-    borderRadius: 5
+  HeaderRightIconView: {
+    width: "10%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingRight: 10,
+
+
+
   },
-
-  courseTitle:{
-
-    fontWeight: '600'
-
-
+  ContentHeading: {
+    color: "#000000",
+    width: "80%",
+    textAlign: "center",
+    fontWeight: "600",
+    fontSize: 22
+  },
+  Heading: {
+    fontSize: 40,
+    fontWeight: "700",
+    padding: 10
   }
+
+
+
 
 });
 
